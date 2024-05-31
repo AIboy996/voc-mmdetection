@@ -1,0 +1,521 @@
+2024/05/31 20:59:45 - mmengine - INFO - 
+------------------------------------------------------------
+System environment:
+    sys.platform: win32
+    Python: 3.10.5 (tags/v3.10.5:f377153, Jun  6 2022, 16:14:13) [MSC v.1929 64 bit (AMD64)]
+    CUDA available: True
+    MUSA available: False
+    numpy_random_seed: 995885916
+    GPU 0: NVIDIA GeForce RTX 3060
+    CUDA_HOME: C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.7
+    NVCC: Cuda compilation tools, release 11.7, V11.7.64
+    MSVC: 用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.32.31329 版
+    GCC: n/a
+    PyTorch: 2.0.1+cu117
+    PyTorch compiling details: PyTorch built with:
+  - C++ Version: 199711
+  - MSVC 193431937
+  - Intel(R) Math Kernel Library Version 2020.0.2 Product Build 20200624 for Intel(R) 64 architecture applications
+  - Intel(R) MKL-DNN v2.7.3 (Git Hash 6dbeffbae1f23cbbeae17adb7b5b13f1f37c080e)
+  - OpenMP 2019
+  - LAPACK is enabled (usually provided by MKL)
+  - CPU capability usage: AVX2
+  - CUDA Runtime 11.7
+  - NVCC architecture flags: -gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_61,code=sm_61;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_80,code=sm_80;-gencode;arch=compute_86,code=sm_86;-gencode;arch=compute_37,code=compute_37
+  - CuDNN 8.5
+  - Magma 2.5.4
+  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, CUDA_VERSION=11.7, CUDNN_VERSION=8.5.0, CXX_COMPILER=C:/actions-runner/_work/pytorch/pytorch/builder/windows/tmp_bin/sccache-cl.exe, CXX_FLAGS=/DWIN32 /D_WINDOWS /GR /EHsc /w /bigobj /FS -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DLIBKINETO_NOCUPTI -DLIBKINETO_NOROCTRACER -DUSE_FBGEMM -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, PERF_WITH_AVX512=1, TORCH_DISABLE_GPU_ASSERTS=OFF, TORCH_VERSION=2.0.1, USE_CUDA=ON, USE_CUDNN=ON, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=OFF, USE_NNPACK=OFF, USE_OPENMP=ON, USE_ROCM=OFF, 
+
+    TorchVision: 0.15.2+cpu
+    OpenCV: 4.9.0
+    MMEngine: 0.10.4
+
+Runtime environment:
+    cudnn_benchmark: False
+    mp_cfg: {'mp_start_method': 'fork', 'opencv_num_threads': 0}
+    dist_cfg: {'backend': 'nccl'}
+    seed: 995885916
+    Distributed launcher: none
+    Distributed training: False
+    GPU number: 1
+------------------------------------------------------------
+
+2024/05/31 20:59:45 - mmengine - INFO - Config:
+auto_scale_lr = dict(base_batch_size=4, enable=True)
+backend_args = None
+data_preprocessor = dict(
+    bgr_to_rgb=True,
+    mean=[
+        123.675,
+        116.28,
+        103.53,
+    ],
+    pad_size_divisor=32,
+    std=[
+        1,
+        1,
+        1,
+    ],
+    type='DetDataPreprocessor')
+data_root = 'data/coco/VOCtrainval_11-May-2012/VOCdevkit/'
+dataset_type = 'VOCDataset'
+default_hooks = dict(
+    checkpoint=dict(interval=1, type='CheckpointHook'),
+    logger=dict(interval=50, type='LoggerHook'),
+    param_scheduler=dict(type='ParamSchedulerHook'),
+    sampler_seed=dict(type='DistSamplerSeedHook'),
+    timer=dict(type='IterTimerHook'),
+    visualization=dict(type='DetVisualizationHook'))
+default_scope = 'mmdet'
+env_cfg = dict(
+    cudnn_benchmark=False,
+    dist_cfg=dict(backend='nccl'),
+    mp_cfg=dict(mp_start_method='fork', opencv_num_threads=0))
+launcher = 'none'
+load_from = './work_dirs/yolov3_d53_8xb8-ms-608-273e_voc_base/epoch_100.pth'
+log_level = 'INFO'
+log_processor = dict(by_epoch=True, type='LogProcessor', window_size=50)
+model = dict(
+    backbone=dict(
+        depth=53,
+        init_cfg=dict(checkpoint='open-mmlab://darknet53', type='Pretrained'),
+        out_indices=(
+            3,
+            4,
+            5,
+        ),
+        type='Darknet'),
+    bbox_head=dict(
+        anchor_generator=dict(
+            base_sizes=[
+                [
+                    (
+                        116,
+                        90,
+                    ),
+                    (
+                        156,
+                        198,
+                    ),
+                    (
+                        373,
+                        326,
+                    ),
+                ],
+                [
+                    (
+                        30,
+                        61,
+                    ),
+                    (
+                        62,
+                        45,
+                    ),
+                    (
+                        59,
+                        119,
+                    ),
+                ],
+                [
+                    (
+                        10,
+                        13,
+                    ),
+                    (
+                        16,
+                        30,
+                    ),
+                    (
+                        33,
+                        23,
+                    ),
+                ],
+            ],
+            strides=[
+                32,
+                16,
+                8,
+            ],
+            type='YOLOAnchorGenerator'),
+        bbox_coder=dict(type='YOLOBBoxCoder'),
+        featmap_strides=[
+            32,
+            16,
+            8,
+        ],
+        in_channels=[
+            512,
+            256,
+            128,
+        ],
+        loss_cls=dict(
+            loss_weight=1.0,
+            reduction='sum',
+            type='CrossEntropyLoss',
+            use_sigmoid=True),
+        loss_conf=dict(
+            loss_weight=1.0,
+            reduction='sum',
+            type='CrossEntropyLoss',
+            use_sigmoid=True),
+        loss_wh=dict(loss_weight=2.0, reduction='sum', type='MSELoss'),
+        loss_xy=dict(
+            loss_weight=2.0,
+            reduction='sum',
+            type='CrossEntropyLoss',
+            use_sigmoid=True),
+        num_classes=80,
+        out_channels=[
+            1024,
+            512,
+            256,
+        ],
+        type='YOLOV3Head'),
+    data_preprocessor=dict(
+        bgr_to_rgb=True,
+        mean=[
+            123.675,
+            116.28,
+            103.53,
+        ],
+        pad_size_divisor=32,
+        std=[
+            1,
+            1,
+            1,
+        ],
+        type='DetDataPreprocessor'),
+    neck=dict(
+        in_channels=[
+            1024,
+            512,
+            256,
+        ],
+        num_scales=3,
+        out_channels=[
+            512,
+            256,
+            128,
+        ],
+        type='YOLOV3Neck'),
+    test_cfg=dict(
+        conf_thr=0.005,
+        max_per_img=100,
+        min_bbox_size=0,
+        nms=dict(iou_threshold=0.45, type='nms'),
+        nms_pre=1000,
+        score_thr=0.05),
+    train_cfg=dict(
+        assigner=dict(
+            min_pos_iou=0,
+            neg_iou_thr=0.5,
+            pos_iou_thr=0.5,
+            type='GridAssigner')),
+    type='YOLOV3')
+optim_wrapper = dict(
+    clip_grad=dict(max_norm=35, norm_type=2),
+    optimizer=dict(lr=0.001, momentum=0.9, type='SGD', weight_decay=0.0005),
+    type='OptimWrapper')
+param_scheduler = [
+    dict(begin=0, by_epoch=False, end=2000, start_factor=0.1, type='LinearLR'),
+    dict(
+        by_epoch=True, gamma=0.1, milestones=[
+            218,
+            246,
+        ], type='MultiStepLR'),
+]
+resume = False
+test_cfg = dict(type='TestLoop')
+test_dataloader = dict(
+    batch_size=3,
+    dataset=dict(
+        ann_file='VOC2012/ImageSets/Main/val.txt',
+        backend_args=None,
+        data_prefix=dict(sub_data_root='VOC2012/'),
+        data_root='data/coco/VOCtrainval_11-May-2012/VOCdevkit/',
+        pipeline=[
+            dict(backend_args=None, type='LoadImageFromFile'),
+            dict(keep_ratio=True, scale=(
+                1000,
+                600,
+            ), type='Resize'),
+            dict(type='LoadAnnotations', with_bbox=True),
+            dict(
+                meta_keys=(
+                    'img_id',
+                    'img_path',
+                    'ori_shape',
+                    'img_shape',
+                    'scale_factor',
+                ),
+                type='PackDetInputs'),
+        ],
+        test_mode=True,
+        type='VOCDataset'),
+    drop_last=False,
+    num_workers=3,
+    persistent_workers=True,
+    sampler=dict(shuffle=False, type='DefaultSampler'))
+test_evaluator = dict(eval_mode='area', metric='mAP', type='VOCMetric')
+test_pipeline = [
+    dict(backend_args=None, type='LoadImageFromFile'),
+    dict(keep_ratio=True, scale=(
+        1000,
+        600,
+    ), type='Resize'),
+    dict(type='LoadAnnotations', with_bbox=True),
+    dict(
+        meta_keys=(
+            'img_id',
+            'img_path',
+            'ori_shape',
+            'img_shape',
+            'scale_factor',
+        ),
+        type='PackDetInputs'),
+]
+train_cfg = dict(max_epochs=200, type='EpochBasedTrainLoop', val_interval=5)
+train_dataloader = dict(
+    batch_sampler=dict(type='AspectRatioBatchSampler'),
+    batch_size=4,
+    dataset=dict(
+        dataset=dict(
+            datasets=[
+                dict(
+                    ann_file='VOC2012/ImageSets/Main/train.txt',
+                    backend_args=None,
+                    data_prefix=dict(sub_data_root='VOC2012/'),
+                    data_root='data/coco/VOCtrainval_11-May-2012/VOCdevkit/',
+                    filter_cfg=dict(
+                        bbox_min_size=32, filter_empty_gt=True, min_size=32),
+                    pipeline=[
+                        dict(backend_args=None, type='LoadImageFromFile'),
+                        dict(type='LoadAnnotations', with_bbox=True),
+                        dict(
+                            keep_ratio=True,
+                            scale=(
+                                1000,
+                                600,
+                            ),
+                            type='Resize'),
+                        dict(prob=0.5, type='RandomFlip'),
+                        dict(type='PackDetInputs'),
+                    ],
+                    type='VOCDataset'),
+            ],
+            ignore_keys=[
+                'dataset_type',
+            ],
+            type='ConcatDataset'),
+        times=3,
+        type='RepeatDataset'),
+    num_workers=4,
+    persistent_workers=True,
+    sampler=dict(shuffle=True, type='DefaultSampler'))
+train_pipeline = [
+    dict(backend_args=None, type='LoadImageFromFile'),
+    dict(type='LoadAnnotations', with_bbox=True),
+    dict(keep_ratio=True, scale=(
+        1000,
+        600,
+    ), type='Resize'),
+    dict(prob=0.5, type='RandomFlip'),
+    dict(type='PackDetInputs'),
+]
+val_cfg = dict(type='ValLoop')
+val_dataloader = dict(
+    batch_size=3,
+    dataset=dict(
+        ann_file='VOC2012/ImageSets/Main/val.txt',
+        backend_args=None,
+        data_prefix=dict(sub_data_root='VOC2012/'),
+        data_root='data/coco/VOCtrainval_11-May-2012/VOCdevkit/',
+        pipeline=[
+            dict(backend_args=None, type='LoadImageFromFile'),
+            dict(keep_ratio=True, scale=(
+                1000,
+                600,
+            ), type='Resize'),
+            dict(type='LoadAnnotations', with_bbox=True),
+            dict(
+                meta_keys=(
+                    'img_id',
+                    'img_path',
+                    'ori_shape',
+                    'img_shape',
+                    'scale_factor',
+                ),
+                type='PackDetInputs'),
+        ],
+        test_mode=True,
+        type='VOCDataset'),
+    drop_last=False,
+    num_workers=3,
+    persistent_workers=True,
+    sampler=dict(shuffle=False, type='DefaultSampler'))
+val_evaluator = dict(eval_mode='area', metric='mAP', type='VOCMetric')
+vis_backends = [
+    dict(type='LocalVisBackend'),
+]
+visualizer = dict(
+    name='visualizer',
+    type='DetLocalVisualizer',
+    vis_backends=[
+        dict(type='LocalVisBackend'),
+    ])
+work_dir = './work_dirs\\yolov3_d53_8xb8-ms-608-273e_voc_base'
+
+2024/05/31 20:59:47 - mmengine - INFO - Distributed training is not used, all SyncBatchNorm (SyncBN) layers in the model will be automatically reverted to BatchNormXd layers if they are used.
+2024/05/31 20:59:47 - mmengine - INFO - Hooks will be executed in the following order:
+before_run:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+before_train:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_train_epoch:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) DistSamplerSeedHook                
+ -------------------- 
+before_train_iter:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_train_iter:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) LoggerHook                         
+(LOW         ) ParamSchedulerHook                 
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+after_train_epoch:
+(NORMAL      ) IterTimerHook                      
+(LOW         ) ParamSchedulerHook                 
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_val:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+before_val_epoch:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+before_val_iter:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_val_iter:
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) DetVisualizationHook               
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+after_val_epoch:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) LoggerHook                         
+(LOW         ) ParamSchedulerHook                 
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+after_val:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+after_train:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_test:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+before_test_epoch:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+before_test_iter:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_test_iter:
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) DetVisualizationHook               
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+after_test_epoch:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+after_test:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+after_run:
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+2024/05/31 20:59:50 - mmengine - INFO - Load checkpoint from ./work_dirs/yolov3_d53_8xb8-ms-608-273e_voc_base/epoch_100.pth
+2024/05/31 21:00:09 - mmengine - INFO - Epoch(test) [  50/1941]    eta: 0:12:06  time: 0.3840  data_time: 0.2118  memory: 1135  
+2024/05/31 21:00:15 - mmengine - INFO - Epoch(test) [ 100/1941]    eta: 0:07:47  time: 0.1243  data_time: 0.0012  memory: 1135  
+2024/05/31 21:00:21 - mmengine - INFO - Epoch(test) [ 150/1941]    eta: 0:06:15  time: 0.1205  data_time: 0.0015  memory: 1135  
+2024/05/31 21:00:27 - mmengine - INFO - Epoch(test) [ 200/1941]    eta: 0:05:25  time: 0.1192  data_time: 0.0015  memory: 1103  
+2024/05/31 21:00:33 - mmengine - INFO - Epoch(test) [ 250/1941]    eta: 0:04:53  time: 0.1211  data_time: 0.0016  memory: 1135  
+2024/05/31 21:00:39 - mmengine - INFO - Epoch(test) [ 300/1941]    eta: 0:04:30  time: 0.1206  data_time: 0.0018  memory: 1165  
+2024/05/31 21:00:45 - mmengine - INFO - Epoch(test) [ 350/1941]    eta: 0:04:12  time: 0.1192  data_time: 0.0011  memory: 1165  
+2024/05/31 21:00:51 - mmengine - INFO - Epoch(test) [ 400/1941]    eta: 0:03:56  time: 0.1181  data_time: 0.0013  memory: 1227  
+2024/05/31 21:00:58 - mmengine - INFO - Epoch(test) [ 450/1941]    eta: 0:03:44  time: 0.1285  data_time: 0.0019  memory: 1261  
+2024/05/31 21:01:04 - mmengine - INFO - Epoch(test) [ 500/1941]    eta: 0:03:32  time: 0.1181  data_time: 0.0016  memory: 1227  
+2024/05/31 21:01:10 - mmengine - INFO - Epoch(test) [ 550/1941]    eta: 0:03:21  time: 0.1201  data_time: 0.0016  memory: 1135  
+2024/05/31 21:01:16 - mmengine - INFO - Epoch(test) [ 600/1941]    eta: 0:03:11  time: 0.1238  data_time: 0.0038  memory: 1135  
+2024/05/31 21:01:22 - mmengine - INFO - Epoch(test) [ 650/1941]    eta: 0:03:02  time: 0.1220  data_time: 0.0018  memory: 1227  
+2024/05/31 21:01:28 - mmengine - INFO - Epoch(test) [ 700/1941]    eta: 0:02:53  time: 0.1220  data_time: 0.0021  memory: 1103  
+2024/05/31 21:01:34 - mmengine - INFO - Epoch(test) [ 750/1941]    eta: 0:02:45  time: 0.1197  data_time: 0.0017  memory: 1165  
+2024/05/31 21:01:40 - mmengine - INFO - Epoch(test) [ 800/1941]    eta: 0:02:37  time: 0.1284  data_time: 0.0015  memory: 1227  
+2024/05/31 21:01:46 - mmengine - INFO - Epoch(test) [ 850/1941]    eta: 0:02:29  time: 0.1213  data_time: 0.0014  memory: 1227  
+2024/05/31 21:01:53 - mmengine - INFO - Epoch(test) [ 900/1941]    eta: 0:02:22  time: 0.1355  data_time: 0.0016  memory: 1329  
+2024/05/31 21:02:00 - mmengine - INFO - Epoch(test) [ 950/1941]    eta: 0:02:15  time: 0.1311  data_time: 0.0014  memory: 1227  
+2024/05/31 21:02:06 - mmengine - INFO - Epoch(test) [1000/1941]    eta: 0:02:08  time: 0.1296  data_time: 0.0008  memory: 1227  
+2024/05/31 21:02:12 - mmengine - INFO - Epoch(test) [1050/1941]    eta: 0:02:00  time: 0.1232  data_time: 0.0018  memory: 1227  
+2024/05/31 21:02:19 - mmengine - INFO - Epoch(test) [1100/1941]    eta: 0:01:53  time: 0.1266  data_time: 0.0029  memory: 1165  
+2024/05/31 21:02:25 - mmengine - INFO - Epoch(test) [1150/1941]    eta: 0:01:46  time: 0.1222  data_time: 0.0005  memory: 1227  
+2024/05/31 21:02:31 - mmengine - INFO - Epoch(test) [1200/1941]    eta: 0:01:39  time: 0.1278  data_time: 0.0014  memory: 1295  
+2024/05/31 21:02:37 - mmengine - INFO - Epoch(test) [1250/1941]    eta: 0:01:32  time: 0.1161  data_time: 0.0013  memory: 1091  
+2024/05/31 21:02:43 - mmengine - INFO - Epoch(test) [1300/1941]    eta: 0:01:25  time: 0.1209  data_time: 0.0010  memory: 1135  
+2024/05/31 21:02:49 - mmengine - INFO - Epoch(test) [1350/1941]    eta: 0:01:18  time: 0.1227  data_time: 0.0016  memory: 1261  
+2024/05/31 21:02:56 - mmengine - INFO - Epoch(test) [1400/1941]    eta: 0:01:11  time: 0.1316  data_time: 0.0017  memory: 1227  
+2024/05/31 21:03:02 - mmengine - INFO - Epoch(test) [1450/1941]    eta: 0:01:05  time: 0.1221  data_time: 0.0024  memory: 1227  
+2024/05/31 21:03:08 - mmengine - INFO - Epoch(test) [1500/1941]    eta: 0:00:58  time: 0.1243  data_time: 0.0012  memory: 1227  
+2024/05/31 21:03:14 - mmengine - INFO - Epoch(test) [1550/1941]    eta: 0:00:51  time: 0.1199  data_time: 0.0019  memory: 1227  
+2024/05/31 21:03:20 - mmengine - INFO - Epoch(test) [1600/1941]    eta: 0:00:44  time: 0.1229  data_time: 0.0011  memory: 1227  
+2024/05/31 21:03:26 - mmengine - INFO - Epoch(test) [1650/1941]    eta: 0:00:38  time: 0.1231  data_time: 0.0016  memory: 1227  
+2024/05/31 21:03:33 - mmengine - INFO - Epoch(test) [1700/1941]    eta: 0:00:31  time: 0.1245  data_time: 0.0028  memory: 1135  
+2024/05/31 21:03:39 - mmengine - INFO - Epoch(test) [1750/1941]    eta: 0:00:24  time: 0.1234  data_time: 0.0026  memory: 1227  
+2024/05/31 21:03:45 - mmengine - INFO - Epoch(test) [1800/1941]    eta: 0:00:18  time: 0.1235  data_time: 0.0009  memory: 1227  
+2024/05/31 21:03:51 - mmengine - INFO - Epoch(test) [1850/1941]    eta: 0:00:11  time: 0.1239  data_time: 0.0023  memory: 1193  
+2024/05/31 21:03:57 - mmengine - INFO - Epoch(test) [1900/1941]    eta: 0:00:05  time: 0.1148  data_time: 0.0022  memory: 1159  
+2024/05/31 21:04:02 - mmengine - INFO - 
+---------------iou_thr: 0.5---------------
+2024/05/31 21:04:08 - mmengine - INFO - 
++-------------+------+-------+--------+-------+
+| class       | gts  | dets  | recall | ap    |
++-------------+------+-------+--------+-------+
+| aeroplane   | 433  | 0     | 0.000  | 0.000 |
+| bicycle     | 358  | 0     | 0.000  | 0.000 |
+| bird        | 559  | 0     | 0.000  | 0.000 |
+| boat        | 424  | 0     | 0.000  | 0.000 |
+| bottle      | 630  | 0     | 0.000  | 0.000 |
+| bus         | 301  | 0     | 0.000  | 0.000 |
+| car         | 1004 | 0     | 0.000  | 0.000 |
+| cat         | 612  | 50946 | 0.152  | 0.000 |
+| chair       | 1176 | 0     | 0.000  | 0.000 |
+| cow         | 298  | 0     | 0.000  | 0.000 |
+| diningtable | 305  | 15504 | 0.023  | 0.000 |
+| dog         | 759  | 0     | 0.000  | 0.000 |
+| horse       | 360  | 0     | 0.000  | 0.000 |
+| motorbike   | 356  | 0     | 0.000  | 0.000 |
+| person      | 4372 | 0     | 0.000  | 0.000 |
+| pottedplant | 489  | 0     | 0.000  | 0.000 |
+| sheep       | 413  | 0     | 0.000  | 0.000 |
+| sofa        | 285  | 0     | 0.000  | 0.000 |
+| train       | 315  | 0     | 0.000  | 0.000 |
+| tvmonitor   | 392  | 0     | 0.000  | 0.000 |
++-------------+------+-------+--------+-------+
+| mAP         |      |       |        | 0.000 |
++-------------+------+-------+--------+-------+
+2024/05/31 21:04:08 - mmengine - INFO - Epoch(test) [1941/1941]    pascal_voc/mAP: 0.0000  pascal_voc/AP50: 0.0000  data_time: 0.0071  time: 0.1297

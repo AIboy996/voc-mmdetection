@@ -114,9 +114,9 @@ python inference.py
 一例：
 
 - 原图：
-    - ![alt text](demo/2009_000759.jpg)
+    - ![alt text](demo/in/2009_000759.jpg)
 - 可视化bounding box：
-    - ![alt text](outputs/vis/2009_000759.jpg)
+    - ![alt text](outputs/in/vis/2009_000759.jpg)
 - 模型输出：
 ```json
 {
